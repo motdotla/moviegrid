@@ -3,6 +3,7 @@ Flask-RESTful==0.2.3
 Jinja2==2.7
 MarkupSafe==0.18
 Werkzeug==0.9.1
+configobj==4.7.2
 distribute==0.6.45
 gunicorn==17.5
 itsdangerous==0.22
