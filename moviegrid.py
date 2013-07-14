@@ -12,7 +12,7 @@ class HBO(restful.Resource):
     r = requests.get("http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name)
     root = ET.fromstring(r.text)
 	result = root.findall(".//title")
-    return result
+    return result.text
 
 api.add_resource(HBO, '/hbo')
 
