@@ -29,6 +29,15 @@ class HBO(restful.Resource):
 
 api.add_resource(HBO, '/hbo')
 
+def hbo_get_title(movie_name):
+    url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
+    r = requests.get(url)
+    root = ET.fromstring(r.text)
+    movie_name = root.findtext("body/results/assetResponse/title", default="NA")
+    T_key = root.findtext("body/results/assetResponse/TKey", default="NA")
+    link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false" 
+    return movie_name
+
 @app.route("/")
 def index():
   return "moviegrid"
@@ -44,9 +53,10 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        payload = { 'name': subject }
-        r = requests.get("http://moviegrid.herokuapp.com/hbo", params=payload)
-        payload = {'to': from_address, 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': r.text, 'html': r.text, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
+        movie_name = hbo_get_title(subject)
+        # payload = { 'name': subject }
+        # r = requests.get("http://moviegrid.herokuapp.com/hbo", params=payload)
+        payload = {'to': from_address, 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': movie_name, 'html': movie_name, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
         return "HTTP/1.1 200 OK"
