@@ -29,8 +29,8 @@ def get_rovi_meta_data(movie_name):
    #    'sig': ROVI_SECRET
    #}
    # r = requests.get("http://api.rovicorp.com/data/v1/movie/info", params=payload)
-   r = requets.get("http://api.rovicorp.com/data/v1/movie/info?movie=the%20watch&country=US&language=en&format=json&apikey=ceb5j4d533gy83tyfse8byre&sig=239b991c52accde7298c6297749e0b03")
-   return r.json()
+   r = requests.get("http://api.rovicorp.com/data/v1/movie/info?movie=the%20watch&country=US&language=en&format=json&apikey=ceb5j4d533gy83tyfse8byre&sig=239b991c52accde7298c6297749e0b03")
+   return r.text
 
 # Find the the official title and streaming link from HBO GO
 def hbo_get_streaming_info(movie_name):
@@ -73,16 +73,16 @@ def sendgrid_parser():
         envelope = simplejson.loads(request.form.get('envelope'))
         to_address = envelope['to'][0]
         from_address = envelope['from']
-        subject = request.form.get('subject')
-        response = hbo_get_streaming_info(subject)
+        movie_name = request.form.get('subject')
+        response = hbo_get_streaming_info(movie_name)
         movie_name = response[0]
         url = response[1]
         # r = get_rovi_meta_data(movie_name)
-        body = "Movie Name: " + movie_name + "<br /><br />Link: " + url + "<br /><br />"
+        body = "Movie Name: " + movie_name + "<br /><br />HBO GO Link: " + url + "<br /><br />"
         payload = {
             'to': from_address, 
             'from': FROM, 
-            'subject': subject, 
+            'subject': SUBJECT, 
             'text': body, 
             'html': body, 
             'api_user': API_USER, 
