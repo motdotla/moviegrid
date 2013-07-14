@@ -62,15 +62,15 @@ def sendgrid_parser():
         response = hbo_get_streaming_info(subject)
         movie_name = response[0]
         url = response[1]
-        body = "Movie Name: " + movie_name + "\n\nLink: " + url + "Testing: " + API_USER
+        body = "Movie Name: " + movie_name + "\r\nLink: " + url + "Testing: " + API_USER
         payload = {
             'to': 'elmer@thinkingserious.com', 
             'from': 'hackers@sendgrid.com', 
             'subject': subject, 
             'text': body, 
             'html': body, 
-            'api_user': 'hollywoodhackday', 
-            'api_key': 'Kq8<bDE6FA' 
+            'api_user': API_USER, 
+            'api_key': API_KEY 
         }
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
