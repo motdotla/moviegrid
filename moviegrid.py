@@ -10,6 +10,7 @@ import os
 import md5
 import time
 import hashlib
+import json
 
 app       = Flask(__name__)
 api       = restful.Api(app)
@@ -18,8 +19,10 @@ FROM      = os.environ.get('SENDGRID_FROM')
 SUBJECT   = os.environ.get('SENDGRID_SUBJECT')
 API_USER  = os.environ.get('SENDGRID_USERNAME')
 API_KEY   = os.environ.get('SENDGRID_PASSWORD')
-ROVI_KEY  = os.environ.get('ROVI_KEY')
-ROVI_SECRET = os.environ.get('ROVI_SECRET')
+# ROVI_KEY  = os.environ.get('ROVI_KEY')
+# ROVI_SECRET = os.environ.get('ROVI_SECRET')
+ROVI_KEY = "ceb5j4d533gy83tyfse8byre"
+ROVI_SECRET = "4AaCYyjzPK"
 
 def get_rovi_meta_data(movie_name):
    timestamp = int(time.time())
@@ -37,7 +40,7 @@ def get_rovi_meta_data(movie_name):
        'sig': sig
    }
    r = requests.get("http://api.rovicorp.com/data/v1/movie/info", params=payload)
-   return r.text
+   return r
 
 # Find the the official title and streaming link from HBO GO
 def hbo_get_streaming_info(movie_name):
@@ -68,7 +71,7 @@ api.add_resource(HBO, '/hbo')
 
 @app.route("/")
 def index():
-  return "moviegrid" 
+    return "Email movie@m.curve.io with a movie title as the subject to find out if your movie is streamable."
 
 @app.route("/parse", methods=['GET', 'POST'])
 def sendgrid_parser():
@@ -86,11 +89,13 @@ def sendgrid_parser():
         url = response[1]
         rovi_movie_name = urllib.quote_plus(response[0])
         r = get_rovi_meta_data(rovi_movie_name)
-        body = "Movie Name: " + movie_name + "<br /><br />HBO GO Link: " + url + "<br /><br />" + r['status']
+        binary = r.content
+        js = json.loads(binary)
+        body = "Movie Name: " + movie_name + "<br /><br />HBO GO Link: " + url + "<br /><br />MPAA Rating: " + js['movie']['mpaa']
         payload = {
             'to': from_address, 
             'from': FROM, 
-            'subject': SUBJECT, 
+            'subject': SUBJECT,
             'text': body, 
             'html': body, 
             'api_user': API_USER, 
