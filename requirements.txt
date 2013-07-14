@@ -9,3 +9,4 @@ gunicorn==17.5
 itsdangerous==0.22
 virtualenv==1.9.1
 wsgiref==0.1.2
+requests==1.2.3

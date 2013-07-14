@@ -1,12 +1,16 @@
 from flask import Flask
 from flask.ext import restful
+import requests
+import xml.etree.ElementTree as ET
 
 app = Flask(__name__)
 api = restful.Api(app)
 
 class HBO(restful.Resource):
   def get(self):
-    return {'hello': 'world'}
+    movie_name = "ted"
+    r = requests.get("http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name)
+    return r.text
 
 api.add_resource(HBO, '/hbo')
 
