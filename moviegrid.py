@@ -62,7 +62,7 @@ def sendgrid_parser():
         movie_name = hbo_get_title(subject)
         payload = {
             'to': to_address, 
-            'from': FROM, 
+            'from': SENGRID_FROM, 
             'subject': subject, 
             'text': movie_name, 
             'html': movie_name, 
