@@ -19,9 +19,11 @@ class HBO(restful.Resource):
     url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
     r = requests.get(url)
     root = ET.fromstring(r.text)
-    movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
-    T_key = root.findtext("body/results/promotionResponse/TKey", default="NA")
-    link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
+    movie_name = root.tag
+    link = root.attrib
+    # movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
+    # T_key = root.findtext("body/results/promotionResponse/TKey", default="NA")
+    # link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
     if movie_name == "NA":
        return { "message": "error", "errors": [ "Movie not found:" + url ] }
     else:
