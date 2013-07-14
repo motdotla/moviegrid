@@ -14,7 +14,8 @@ class HBO(restful.Resource):
     movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
     T_key = root.findtext("body/results/promotionResponse/TKey", default="NA")
     url = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
-    return movie_name + " " + url
+    
+    return {'title': movie_name, 'url': url }
 
 api.add_resource(HBO, '/hbo')
 
