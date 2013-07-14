@@ -46,7 +46,7 @@ def hbo_get_title(movie_name):
 
 @app.route("/")
 def index():
-  return os.environ.get('HELLO')
+  return "moviegrid" 
 
 @app.route("/parse", methods=['GET', 'POST'])
 def sendgrid_parser():
