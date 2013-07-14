@@ -15,6 +15,21 @@ FROM      = os.environ.get('SENDGRID_FROM')
 SUBJECT   = os.environ.get('SENDGRID_SUBJECT')
 API_USER  = os.environ.get('SENDGRID_USERNAME')
 API_KEY   = os.environ.get('SENDGRID_PASSWORD')
+ROVI_KEY  = os.environ.get('ROVI_KEY')
+ROVI_SECRET = os.environ.get('ROVI_SECRET')
+
+def get_rovi_meta_data(movie_name):
+   movie_name = urllib.quote_plus(movie_name)
+   payload = {
+       'movie': movie_name, 
+       'country': US, 
+       'language': en, 
+       'format': json, 
+       'apikey': ROVI_KEY, 
+       'sig': ROVI_SECRET
+   }
+   r = requests.get("http://api.rovicorp.com/data/v1/movie/info", params=payload)
+   return r
 
 # Find the the official title and streaming link from HBO GO
 def hbo_get_streaming_info(movie_name):
@@ -61,7 +76,8 @@ def sendgrid_parser():
         response = hbo_get_streaming_info(subject)
         movie_name = response[0]
         url = response[1]
-        body = "Movie Name: " + movie_name + "<br /><br />Link: " + url
+        response = get_rovi_meta_data(movie_name)
+        body = "Movie Name: " + movie_name + "<br /><br />Link: " + url + "<br /><br />" + response.text
         payload = {
             'to': from_address, 
             'from': FROM, 
