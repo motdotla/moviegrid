@@ -59,15 +59,15 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        movie_name = hbo_get_title(subject)
+        # movie_name = hbo_get_title(subject)
         payload = {
-            'to': to_address, 
-            'from': SENGRID_FROM, 
+            'to': 'elmer@thinkingserious.com', 
+            'from': 'hackers@sendgrid.com', 
             'subject': subject, 
-            'text': movie_name, 
-            'html': movie_name, 
-            'api_user': SENDGRID_USERNAME, 
-            'api_key': SENDGRID_PASSWORD 
+            'text': subject, 
+            'html': subject, 
+            'api_user': 'hollywoodhackday', 
+            'api_key': 'Kq8<bDE6FA' 
         }
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
