@@ -13,9 +13,7 @@ class HBO(restful.Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, help="Name cannot be blank!")
     args = parser.parse_args()
-    movie_name = urllib.quote_plus(args['name'])
-    print movie_name
-    url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
+    url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + args['name']
     r = requests.get(url)
     root = ET.fromstring(r.text)
     movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
