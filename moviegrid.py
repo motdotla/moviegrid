@@ -2,6 +2,7 @@ from flask import Flask
 from flask.ext import restful
 from flask.ext.restful import reqparse
 import requests
+from flask import Flask, Response, request
 import xml.etree.ElementTree as ET
 import urllib
 import simplejson
@@ -32,7 +33,7 @@ api.add_resource(HBO, '/hbo')
 def index():
   return "moviegrid"
 
-@app.route('/parse', methods=('GET', 'POST'))
+@app.route("/parse", methods=['GET', 'POST'])
 def sendgrid_parser():
     if request.method == 'POST':
         """Required response to SendGrid.com's Parse API"""
@@ -44,11 +45,11 @@ def sendgrid_parser():
         from_address = envelope['from']
         text = request.form.get('text')
         subject = request.form.get('subject')
-        num_attachments = int(request.form.get('attachments', 0))
         payload = {'to': from_address, 'from': 'hackers@SendGrid.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': config['sendgrid_api_user'], 'api_key': config['sendgrid_api_key']}
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
         return "HTTP/1.1 200 OK"
 
 if __name__ == "__main__":
+  app.debug = True
   app.run()
