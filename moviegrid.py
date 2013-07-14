@@ -59,13 +59,13 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        # movie_name = hbo_get_title(subject)
+        movie_name = hbo_get_title(subject)
         payload = {
             'to': 'elmer@thinkingserious.com', 
             'from': 'hackers@sendgrid.com', 
             'subject': subject, 
-            'text': subject, 
-            'html': subject, 
+            'text': movie_name, 
+            'html': movie_name, 
             'api_user': 'hollywoodhackday', 
             'api_key': 'Kq8<bDE6FA' 
         }
