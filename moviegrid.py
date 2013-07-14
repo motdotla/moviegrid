@@ -16,25 +16,7 @@ SUBJECT   = os.environ.get('SENDGRID_SUBJECT')
 API_USER  = os.environ.get('SENDGRID_USERNAME')
 API_KEY   = os.environ.get('SENDGRID_PASSWORD')
 
-class HBO(restful.Resource):
-  def get(self):
-    parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str, required=True, help="Name cannot be blank!")
-    args = parser.parse_args()
-    movie_name = urllib.quote_plus(args['name'])
-    url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
-    r = requests.get(url)
-    root = ET.fromstring(r.text)
-    movie_name = root.findtext("body/results/assetResponse/title", default="NA")
-    T_key = root.findtext("body/results/assetResponse/TKey", default="NA")
-    link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
-    if movie_name == "NA":
-       return { "message": "error", "errors": [ "Movie not found"] }
-    else:
-       return {'title': movie_name, 'url': link }
-
-api.add_resource(HBO, '/hbo')
-
+# Find the the official title and streaming link from HBO GO
 def hbo_get_streaming_info(movie_name):
     url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
     r = requests.get(url)
@@ -43,6 +25,23 @@ def hbo_get_streaming_info(movie_name):
     T_key = root.findtext("body/results/assetResponse/TKey", default="NA")
     link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false" 
     return movie_name, link
+
+# API request handler, hbo endpoint
+class HBO(restful.Resource):
+  def get(self):
+    parser = reqparse.RequestParser()
+    parser.add_argument('name', type=str, required=True, help="Name cannot be blank!")
+    args = parser.parse_args()
+    movie_name = urllib.quote_plus(args['name'])
+    response = hbo_get_streaming_info(movie_name)
+    movie_name = response[0]
+    url = response[1]
+    if movie_name == "NA":
+       return { "message": "error", "errors": [ "Movie not found"] }
+    else:
+       return {'title': movie_name, 'url': url }
+
+api.add_resource(HBO, '/hbo')
 
 @app.route("/")
 def index():
