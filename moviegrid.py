@@ -53,7 +53,7 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        movie_name = hbo_get_title(subject)
+        movie_name = hbo_get_title('ted')
         # payload = { 'name': subject }
         # r = requests.get("http://moviegrid.herokuapp.com/hbo", params=payload)
         payload = {'to': from_address, 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': movie_name, 'html': movie_name, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
