@@ -8,6 +8,8 @@ import urllib
 import simplejson
 import os
 import md5
+import time
+import hashlib
 
 app       = Flask(__name__)
 api       = restful.Api(app)
@@ -21,19 +23,22 @@ ROVI_SECRET = os.environ.get('ROVI_SECRET')
 
 @app.route("/rovi")
 def get_rovi_meta_data():
-   m = md5.new()
-   int t = time.mktime(time.gmtime())
-   sig = m.update(ROVI_KEY + ROVI_SECRET + t)
+   movie_name = "The Watch"
+   timestamp = int(time.time())
+   m = hashlib.md5()
+   m.update(ROVI_KEY)
+   m.update(ROVI_SECRET)
+   m.update(str(timestamp))
+   sig = m.hexdigest()
    payload = {
        'movie': movie_name, 
-       'country': US, 
-       'language': en, 
-       'format': json, 
+       'country': 'US', 
+       'language': 'en', 
+       'format': 'json', 
        'apikey': ROVI_KEY, 
        'sig': sig
    }
    r = requests.get("http://api.rovicorp.com/data/v1/movie/info", params=payload)
-   # r = requests.get("http://api.rovicorp.com/data/v1/movie/info?movie=the%20watch&country=US&language=en&format=json&apikey=ceb5j4d533gy83tyfse8byre&sig=239b991c52accde7298c6297749e0b03")
    return r.text
 
 # Find the the official title and streaming link from HBO GO
