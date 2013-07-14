@@ -45,10 +45,10 @@ def sendgrid_parser():
         from_address = envelope['from']
         text = request.form.get('text')
         subject = request.form.get('subject')
-        payload = {'to': from_address, 'from': 'hackers@SendGrid.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': config['sendgrid_api_user'], 'api_key': config['sendgrid_api_key']}
+        payload = {'to': 'elmer@thinkingserious.com', 'from': 'hackers@SendGrid.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': config['sendgrid_api_user'], 'api_key': config['sendgrid_api_key']}
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
-        return "HTTP/1.1 200 OK"
+        return payload
 
 if __name__ == "__main__":
   app.debug = True
