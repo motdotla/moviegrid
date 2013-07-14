@@ -44,7 +44,9 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        payload = {'to': 'elmer@thinkingserious.com', 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
+        payload = { 'name': subject }
+        r = requests.get("http://moviegrid.herokuapp.com/hbo", params=payload)
+        payload = {'to': from_address, 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': r.text, 'html': r.text, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
         return "HTTP/1.1 200 OK"
