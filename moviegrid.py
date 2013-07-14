@@ -76,7 +76,7 @@ def sendgrid_parser():
         response = hbo_get_streaming_info(subject)
         movie_name = response[0]
         url = response[1]
-        response = get_rovi_meta_data(movie_name)
+        # response = get_rovi_meta_data(movie_name)
         body = "Movie Name: " + movie_name + "<br /><br />Link: " + url + "<br /><br />"
         payload = {
             'to': from_address, 
