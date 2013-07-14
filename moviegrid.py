@@ -42,12 +42,9 @@ def sendgrid_parser():
 
         envelope = simplejson.loads(request.form.get('envelope'))
         to_address = envelope['to'][0]
-        print "to: " + to_address
         from_address = envelope['from']
-        print "from: " + from_address
         subject = request.form.get('subject')
-        print "subject: " + subject
-        payload = {'to': 'elmer@thinkingserious.com', 'from': 'elmer@thinkingserious.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': config['sendgrid_api_user'], 'api_key': config['sendgrid_api_key']}
+        payload = {'to': 'elmer@thinkingserious.com', 'from': 'hackers@sendgrid.com', 'subject': 'MovieGrid Results', 'text': from_address, 'html': from_address, 'api_user': 'hollywoodhackday', 'api_key': 'Kq8<bDE6FA'}
         r = requests.get("http://sendgrid.com/api/mail.send.json", params=payload)
 
         return "HTTP/1.1 200 OK"
