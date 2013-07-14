@@ -11,4 +11,3 @@ requests==1.2.3
 simplejson==3.3.0
 virtualenv==1.9.1
 wsgiref==0.1.2
-simplejson==3.3.0
