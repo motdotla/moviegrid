@@ -21,9 +21,7 @@ API_KEY   = os.environ.get('SENDGRID_PASSWORD')
 ROVI_KEY  = os.environ.get('ROVI_KEY')
 ROVI_SECRET = os.environ.get('ROVI_SECRET')
 
-@app.route("/rovi")
-def get_rovi_meta_data():
-   movie_name = "The Watch"
+def get_rovi_meta_data(movie_name):
    timestamp = int(time.time())
    m = hashlib.md5()
    m.update(ROVI_KEY)
@@ -86,8 +84,8 @@ def sendgrid_parser():
         response = hbo_get_streaming_info(movie_name)
         movie_name = response[0]
         url = response[1]
-        # r = get_rovi_meta_data(movie_name)
-        body = "Movie Name: " + movie_name + "<br /><br />HBO GO Link: " + url + "<br /><br />"
+        r = get_rovi_meta_data(movie_name)
+        body = "Movie Name: " + movie_name + "<br /><br />HBO GO Link: " + url + "<br /><br />" + r.text
         payload = {
             'to': from_address, 
             'from': FROM, 
