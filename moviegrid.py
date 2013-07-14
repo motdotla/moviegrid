@@ -65,7 +65,7 @@ def sendgrid_parser():
             'from': 'hackers@sendgrid.com', 
             'subject': subject, 
             'text': movie_name[0] + movie_name[1], 
-            'html': movie_name, 
+            'html': movie_name[0] + movie_name[1], 
             'api_user': 'hollywoodhackday', 
             'api_key': 'Kq8<bDE6FA' 
         }
