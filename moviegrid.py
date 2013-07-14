@@ -35,7 +35,7 @@ class HBO(restful.Resource):
 
 api.add_resource(HBO, '/hbo')
 
-def hbo_get_title(movie_name):
+def hbo_get_streaming_info(movie_name):
     url = "http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name
     r = requests.get(url)
     root = ET.fromstring(r.text)
@@ -59,13 +59,16 @@ def sendgrid_parser():
         to_address = envelope['to'][0]
         from_address = envelope['from']
         subject = request.form.get('subject')
-        movie_name = hbo_get_title(subject)
+        response = hbo_get_streaming_info(subject)
+        movie_name = response[0]
+        url = response[1]
+        body = "Movie Name: " + movie_name + "\n\rLink: " + url
         payload = {
             'to': 'elmer@thinkingserious.com', 
             'from': 'hackers@sendgrid.com', 
             'subject': subject, 
-            'text': movie_name[0] + movie_name[1], 
-            'html': movie_name[0] + movie_name[1], 
+            'text': body, 
+            'html': body, 
             'api_user': 'hollywoodhackday', 
             'api_key': 'Kq8<bDE6FA' 
         }
