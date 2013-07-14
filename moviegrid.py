@@ -20,11 +20,11 @@ class HBO(restful.Resource):
     root = ET.fromstring(r.text)
     movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
     T_key = root.findtext("body/results/promotionResponse/TKey", default="NA")
-    url = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
+    link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false"
     if movie_name == "NA":
-        return { "message": "error", "errors": [ "Movie not found" ] }
+        return { "message": "error", "errors": [ "Movie not found:" + url ] }
     else:
-        return {'title': movie_name, 'url': url }
+        return {'title': movie_name, 'url': link }
 
 api.add_resource(HBO, '/hbo')
 
