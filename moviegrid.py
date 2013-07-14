@@ -42,7 +42,7 @@ def hbo_get_title(movie_name):
     movie_name = root.findtext("body/results/assetResponse/title", default="NA")
     T_key = root.findtext("body/results/assetResponse/TKey", default="NA")
     link = "http://www.hbogo.com/#search&browseMode=browseGrid?searchTerm=ted/video&assetID=" + T_key + "?videoMode=embeddedVideo?showSpecialFeatures=false" 
-    return movie_name
+    return movie_name, link
 
 @app.route("/")
 def index():
@@ -64,7 +64,7 @@ def sendgrid_parser():
             'to': 'elmer@thinkingserious.com', 
             'from': 'hackers@sendgrid.com', 
             'subject': subject, 
-            'text': movie_name, 
+            'text': movie_name[0] + movie_name[1], 
             'html': movie_name, 
             'api_user': 'hollywoodhackday', 
             'api_key': 'Kq8<bDE6FA' 
