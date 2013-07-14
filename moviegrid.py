@@ -3,6 +3,7 @@ from flask.ext import restful
 from flask.ext.restful import reqparse
 import requests
 import xml.etree.ElementTree as ET
+import urllib
 
 app = Flask(__name__)
 api = restful.Api(app)
@@ -12,7 +13,7 @@ class HBO(restful.Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, help="Name cannot be blank!")
     args = parser.parse_args()
-    movie_name = args['name']
+    movie_name = urllib.urlencode(args['name'])
     r = requests.get("http://catalog.lv3.hbogo.com/apps/mediacatalog/rest/searchService/HBO/search?term=" + movie_name)
     root = ET.fromstring(r.text)
     movie_name = root.findtext("body/results/promotionResponse/title", default="NA")
