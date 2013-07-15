@@ -19,10 +19,9 @@ FROM      = os.environ.get('SENDGRID_FROM')
 SUBJECT   = os.environ.get('SENDGRID_SUBJECT')
 API_USER  = os.environ.get('SENDGRID_USERNAME')
 API_KEY   = os.environ.get('SENDGRID_PASSWORD')
-# ROVI_KEY  = os.environ.get('ROVI_KEY')
-# ROVI_SECRET = os.environ.get('ROVI_SECRET')
-ROVI_KEY = "ceb5j4d533gy83tyfse8byre"
-ROVI_SECRET = "4AaCYyjzPK"
+GRACENOTE_ID = os.environ.get('GRACENOTE_ID')
+ROVI_KEY  = os.environ.get('ROVI_KEY')
+ROVI_SECRET = os.environ.get('ROVI_SECRET')
 
 def get_rovi_meta_data(movie_name):
    timestamp = int(time.time())
