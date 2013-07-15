@@ -70,7 +70,7 @@ api.add_resource(HBO, '/hbo')
 
 @app.route("/")
 def index():
-    return "Email movie@m.curve.io with a movie title as the subject to find out if your movie is streamable."
+    return "Email <a href=\"mailto:movie@m.carve.io\">mailto:movie@m.carve.io</a> with a movie title as the subject to find out if your movie is streamable on HBO GO."
 
 @app.route("/parse", methods=['GET', 'POST'])
 def sendgrid_parser():
